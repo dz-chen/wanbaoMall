@@ -1,0 +1,29 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	xsi:schemaLocation="http://www.springframework.org/schema/rabbit
+	http://www.springframework.org/schema/rabbit/spring-rabbit-1.4.xsd
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+	<!-- 定义RabbitMQ的连接工厂 -->
+	<rabbit:connection-factory id="connectionFactory"
+		host="${rabbitmq.host}" port="${rabbitmq.port}" username="${rabbitmq.username}" password="${rabbitmq.username}"
+		virtual-host="${rabbitmq.vhost}" />
+
+	<!-- 管理 -->
+	<rabbit:admin connection-factory="connectionFactory" />
+	
+	<!-- 定义队列 -->
+	<rabbit:queue name="WANBAO-SEARCH-ITEM-QUEUE" auto-declare="true" durable="true" />
+	<!-- 后台系统交换机 和 前台/搜索系统消息队列 的绑定是在rabbitmq的管理界面手动完成!!  -->
+	
+	<!-- 消费者对象 -->
+	<bean id="itemMQHandler" class="com.wanbao.search.mq.handler.ItemMQHandler"></bean>
+
+	<!-- 监听队列=> 由自定义的execute方法接受消息并作出处理 -->
+	<rabbit:listener-container connection-factory="connectionFactory" >
+		<rabbit:listener ref="itemMQHandler" method="execute" queue-names="WANBAO-SEARCH-ITEM-QUEUE"/>
+	</rabbit:listener-container>
+
+
+</beans>

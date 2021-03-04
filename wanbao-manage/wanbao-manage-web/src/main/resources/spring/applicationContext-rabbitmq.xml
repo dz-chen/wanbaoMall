@@ -1,0 +1,25 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.springframework.org/schema/rabbit
+	http://www.springframework.org/schema/rabbit/spring-rabbit-1.4.xsd
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+	<!-- 定义RabbitMQ的连接工厂 -->
+	<rabbit:connection-factory id="connectionFactory"
+		host="${rabbitmq.host}" port="${rabbitmq.port}" username="${rabbitmq.username}" password="${rabbitmq.username}"
+		virtual-host="${rabbitmq.vhost}" />
+
+	<!-- 管理 -->
+	<rabbit:admin connection-factory="connectionFactory" />
+
+	<!-- 定义交换机 -->
+	<rabbit:topic-exchange name="WANBAO-ITEM-EXCHANGE" auto-declare="true" durable="true" />
+		
+	<!-- 定义模板,用于发消息 -->
+	<rabbit:template id="rabbitTemplate" connection-factory="connectionFactory" 
+		exchange="WANBAO-ITEM-EXCHANGE"/>
+	
+	<!-- 后台交换机和前台消息队列的绑定是在rabbitmq的管理界面手动完成!!  -->
+</beans>

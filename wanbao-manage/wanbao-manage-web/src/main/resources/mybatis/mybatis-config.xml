@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://www.mybatis.org/dtd/mybatis-3-config.dtd">
+  
+  <!-- mybatis 的全局配置文件 -->
+<configuration>
+	
+	<!--  配置别名包,已经放到spring与mybatis的整合文件中
+	<typeAliases>
+		<package name="cn.itcast.usermanage.pojo" />  
+	</typeAliases>
+	--> 
+	
+	<!-- 配置数据库连接的环境 -->
+	<!--  数据库放到spring与mybatis的整合文件中配置
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="${jdbc.driver}" />
+				<property name="url" value="${jdbc.url}" />
+				<property name="username" value="${jdbc.username}" />
+				<property name="password" value="${jdbc.password}" />
+			</dataSource>
+		</environment>
+	</environments>  
+	 -->
+	 <!--   放到spring与mybatis的整合文件中配置
+	<mappers>
+		<package name="cn.itcast.usermanage.mapper" />
+	</mappers>
+	-->
+	<plugins>
+		<!-- 分页助手 -->
+		<plugin interceptor="com.github.pagehelper.PageHelper">
+	        <property name="dialect" value="mysql"/>
+	        <!-- 该参数默认为false -->
+	        <!-- 设置为true时，使用RowBounds分页会进行count查询 -->
+	        <property name="rowBoundsWithCount" value="true"/>
+   		</plugin>
+   		
+   		 <plugin interceptor="com.github.abel533.mapperhelper.MapperInterceptor">
+			    <!--主键自增回写方法,默认值MYSQL,详细说明请看文档-->
+			    <property name="IDENTITY" value="MYSQL"/>
+			    <!--通用Mapper接口，多个通用接口用逗号隔开-->
+			    <property name="mappers" value="com.github.abel533.mapper.Mapper"/>
+		  </plugin>
+   		
+		
+	</plugins>
+	
+</configuration>

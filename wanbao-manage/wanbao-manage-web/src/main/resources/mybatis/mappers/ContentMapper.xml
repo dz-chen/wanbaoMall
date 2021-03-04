@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wanbao.manage.mapper.ContentMapper">
+	<!-- resultMap解决数据库表字段与pojo属性命名不一致的问题 -->
+	<resultMap id="content" type="com.wanbao.manage.pojo.Content">
+    	<result column="category_id" property="categoryId"></result>
+    	<result column="sub_title" property="subTitle"></result>
+    	<result column="title_desc" property="titleDesc"></result>
+	</resultMap>
+
+	<select id="queryContentList" resultMap="content" resultType="Content">
+		select* from tb_content where category_id=#{categoryId} order by updated desc            
+	</select>
+
+</mapper>
